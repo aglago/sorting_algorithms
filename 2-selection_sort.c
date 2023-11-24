@@ -1,78 +1,35 @@
 #include "sort.h"
 
-void arg(void);
 /**
- * count_sort - sorting array of ints
- * @array: array of ints
- * @size: size of array
+ * selection_sort - Sorts an array of integers in ascending order using
+ * the Selection Sort algorithm.
  *
- */
-void count_sort(int *array, size_t size)
+ * @array: The array to be sorted.
+ * @size: The size of the array.
+*/
+
+void selection_sort(int *array, size_t size)
 {
-	int *cp, *count;
-	unsigned int max, i, tmp;
+	size_t i, j, min;
+	int tmp;
 
-	if (array == NULL || size < 2)
-		return;
-
-	i = 0;
-	max = 0;
-	while (i < size)
+	for (i = 0; i < size - 1; i++)
 	{
-		if (array[i] > (int)max)
-			max = array[i];
-		i++;
-	}
-	max++;
+		min = i;
 
-	count = malloc(max * sizeof(int));
-	if (count == NULL)
-		return;
-	cp = malloc(size * sizeof(int));
-	if (cp == NULL)
-	{
-		free(count);
-		return;
+		for (j = i + 1; j < size; j++)
+		{
+			if (array[j] < array[min])
+				min = j;
+		}
+		if (min != i)
+		{
+			/*swap the elements*/
+			tmp = array[i];
+			array[i] = array[min];
+			array[min] = tmp;
+			/* print the array after each swap */
+			print_array(array, size);
+		}
 	}
-
-	i = 0;
-	while (i < size)
-	{
-		cp[i] = array[i];
-		i++;
-	}
-
-	i = 0;
-	while (i < max)
-	{
-		count[i] = 0;
-		i++;
-	}
-
-	i = 0;
-	while (i < size)
-	{
-		count[array[i]]++;
-		i++;
-	}
-
-	i = 1;
-	while (i < max)
-	{
-		count[i] += count[i - 1];
-		i++;
-	}
-
-	print_array(count, max);
-
-	i = 0;
-	while (i < size)
-	{
-		tmp = cp[i];
-		array[count[tmp] - 1] = tmp;
-		count[tmp]--;
-		i++;
-	}
-	free(count);
-	free(cp);
 }
